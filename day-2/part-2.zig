@@ -1,19 +1,4 @@
 const std = @import("std");
-// we could enhance preformance by only checking if current string is in the other string if length of remaining string is >= stringBuffer
-// so what we could do is check if the string contains our string more than once
-//
-//
-//
-//
-// preformance enhancement
-// stingi of 123123
-// i see 6 charevters so i can take each mutation 0..1 0..2 until 9..len(s)
-// i can check how many times they show up in the string using an indexOf()
-// if the count is more than 1 we have repeating values
-//
-// or we have a string and for each element in the string we go until a non-unique int is it
-// once we see that the charecter is already in the map, we compare if the position of the .. nvm
-// this wont work for 123867123
 pub fn main() !void {
     // 1. Initialize allocator
     var gpa: std.heap.DebugAllocator(.{}) = .init;
@@ -34,8 +19,8 @@ pub fn main() !void {
         }
         badCodes.deinit(allocator);
     }
-    const s: []const u8 = "19391-47353,9354357-9434558,4646427538-4646497433,273-830,612658-674925,6639011-6699773,4426384-4463095,527495356-527575097,22323258-22422396,412175-431622,492524-611114,77-122,992964846-993029776,165081-338962,925961-994113,7967153617-7967231799,71518058-71542434,64164836-64292066,4495586-4655083,2-17,432139-454960,4645-14066,6073872-6232058,9999984021-10000017929,704216-909374,48425929-48543963,52767-94156,26-76,1252-3919,123-228";
-    // const s: []const u8 = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124";
+    // const s: []const u8 = "19391-47353,9354357-9434558,4646427538-4646497433,273-830,612658-674925,6639011-6699773,4426384-4463095,527495356-527575097,22323258-22422396,412175-431622,492524-611114,77-122,992964846-993029776,165081-338962,925961-994113,7967153617-7967231799,71518058-71542434,64164836-64292066,4495586-4655083,2-17,432139-454960,4645-14066,6073872-6232058,9999984021-10000017929,704216-909374,48425929-48543963,52767-94156,26-76,1252-3919,123-228";
+    const s: []const u8 = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124";
     var it = std.mem.splitScalar(u8, s, ',');
 
     while (it.next()) |line| {
@@ -67,6 +52,23 @@ pub fn main() !void {
             const r: u64 = @rem(currentString.len, 2);
 
             if (r == 0) {
+
+                // check if its divisble by 3, if so check if it has a repeating 3 pattern
+                // check if disible by 4, if so do the same for 4..
+                // as a matter of fact we could do for (len) |index| {
+                //  //check if even\n
+                //  if(@rem(index/2) ==0){
+                //  newstring = ""
+                //  for(index) |position| {
+                //  newString.append(0..index)
+                //  // we need to append the 0..index pos amount of times
+                //  }
+                //  if currentString == newString {
+                //  try badcodes.append(())
+                //  }
+                //      currentString[0..]
+                //  }
+                // }
                 std.debug.print("{d} is even\n", .{index});
                 const h: u64 = currentString.len / 2;
                 const isEqual = std.mem.eql(u8, currentString[0..h], currentString[h..]);
